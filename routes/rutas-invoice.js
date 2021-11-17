@@ -27,6 +27,9 @@ router.post(
 // consulta todos los invoices
 router.get("/", controladorInvoices.getAllInvoices);
 
+// consulta paid invoices
+router.get("/:status", controladorInvoices.getStatusInvoices);
+
 // consulta invoice por su id
 router.get("/:id", controladorInvoices.getInvoiceById);
 

@@ -162,6 +162,22 @@ const getAllInvoices = async (req, res, next) => {
   });
 };
 
+// consulta paid invoices
+const getStatusInvoices = async (req, res, next) => {
+  const statusInvoice = req.params.status;
+  let invoices;
+  try {
+    invoices = await Invoice.find({ status: { $eq: statusInvoice } }).populate(["client"]);
+  } catch (err) {
+    const error = new Error("Validation Error. Check the datas.");
+    error.code = 500;
+    return next(error);
+  }
+  res.status(200).json({
+    invoices: invoices,
+  });
+};
+
 // consulta invoice por su id
 const getInvoiceById = async (req, res, next) => {
   const idInvoice = req.params.id;
@@ -265,6 +281,7 @@ const deleteInvoiceById = async (req, res, next) => {
 
 exports.createNewInvoice = createNewInvoice;
 exports.getAllInvoices = getAllInvoices;
+exports.getStatusInvoices = getStatusInvoices;
 exports.getInvoiceById = getInvoiceById;
 exports.modifyInvoiceById = modifyInvoiceById;
 exports.deleteInvoiceById = deleteInvoiceById;
