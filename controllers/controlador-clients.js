@@ -78,7 +78,7 @@ const getAllClients = async (req, res, next) => {
   });
 };
 
-// consulta client por su id
+// consulta client por id
 const getClientById = async (req, res, next) => {
   const idClient = req.params.id;
   let client;
