@@ -31,7 +31,7 @@ router.get("/", controladorInvoices.getAllInvoices);
 router.get("/:status", controladorInvoices.getStatusInvoices);
 
 // consulta invoice por su id
-router.get("/:id", controladorInvoices.getInvoiceById);
+router.get("/id/:id", controladorInvoices.getInvoiceById);
 
 // modificar invoice por id
 router.patch("/:id", controladorInvoices.modifyInvoiceById);

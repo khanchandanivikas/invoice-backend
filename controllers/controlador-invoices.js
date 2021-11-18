@@ -3,7 +3,9 @@ const app = express();
 app.use(express.json());
 const mongoose = require("mongoose");
 const mongooseUniqueValidator = require("mongoose-unique-validator");
-const { validationResult } = require("express-validator");
+const {
+  validationResult
+} = require("express-validator");
 const Invoice = require("../models/invoice");
 const Client = require("../models/client");
 
@@ -167,7 +169,11 @@ const getStatusInvoices = async (req, res, next) => {
   const statusInvoice = req.params.status;
   let invoices;
   try {
-    invoices = await Invoice.find({ status: { $eq: statusInvoice } }).populate(["client"]);
+    invoices = await Invoice.find({
+      status: {
+        $eq: statusInvoice
+      }
+    }).populate(["client"]);
   } catch (err) {
     const error = new Error("Validation Error. Check the datas.");
     error.code = 500;
@@ -183,7 +189,7 @@ const getInvoiceById = async (req, res, next) => {
   const idInvoice = req.params.id;
   let invoice;
   try {
-    invoice = await (await Invoice.findById(idInvoice)).populate("client");
+    invoice = await Invoice.findById(idInvoice).populate("client");
   } catch (err) {
     const error = new Error(
       "There was some error. It was not possible to recover the datas."
