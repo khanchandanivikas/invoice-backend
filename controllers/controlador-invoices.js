@@ -3,9 +3,7 @@ const app = express();
 app.use(express.json());
 const mongoose = require("mongoose");
 const mongooseUniqueValidator = require("mongoose-unique-validator");
-const {
-  validationResult
-} = require("express-validator");
+const { validationResult } = require("express-validator");
 const Invoice = require("../models/invoice");
 const Client = require("../models/client");
 
@@ -171,8 +169,8 @@ const getStatusInvoices = async (req, res, next) => {
   try {
     invoices = await Invoice.find({
       status: {
-        $eq: statusInvoice
-      }
+        $eq: statusInvoice,
+      },
     }).populate(["client"]);
   } catch (err) {
     const error = new Error("Validation Error. Check the datas.");
@@ -206,6 +204,62 @@ const getInvoiceById = async (req, res, next) => {
   }
   res.json({
     invoice: invoice,
+  });
+};
+
+// consulta invoice por id client
+const getInvoiceByIdClient = async (req, res, next) => {
+  const idCliente = req.params.idClient;
+  let invoices;
+  try {
+    invoices = await Invoice.find({
+      client: { $eq: idCliente },
+    }).populate("client");
+  } catch (err) {
+    const error = new Error(
+      "There was some error. It was not possible to recover the datas."
+    );
+    error.code = 500;
+    return next(error);
+  }
+  if (!invoices) {
+    const error = new Error(
+      "It was not possible to recover an invoice with the given id"
+    );
+    error.code = 404;
+    return next(error);
+  }
+  res.json({
+    invoices: invoices,
+  });
+};
+
+// consulta invoice por id client y estado
+const getInvoiceByIdClientEstado = async (req, res, next) => {
+  const idCliente = req.params.idClient;
+  const estado = req.params.status;
+  let invoices;
+  try {
+    invoices = await Invoice.find({
+      client: { $eq: idCliente },
+      status: { $eq: estado },
+    }).populate("client");
+  } catch (err) {
+    const error = new Error(
+      "There was some error. It was not possible to recover the datas."
+    );
+    error.code = 500;
+    return next(error);
+  }
+  if (!invoices) {
+    const error = new Error(
+      "It was not possible to recover an invoice with the given id"
+    );
+    error.code = 404;
+    return next(error);
+  }
+  res.json({
+    invoices: invoices,
   });
 };
 
@@ -289,5 +343,7 @@ exports.createNewInvoice = createNewInvoice;
 exports.getAllInvoices = getAllInvoices;
 exports.getStatusInvoices = getStatusInvoices;
 exports.getInvoiceById = getInvoiceById;
+exports.getInvoiceByIdClient = getInvoiceByIdClient;
+exports.getInvoiceByIdClientEstado = getInvoiceByIdClientEstado;
 exports.modifyInvoiceById = modifyInvoiceById;
 exports.deleteInvoiceById = deleteInvoiceById;
