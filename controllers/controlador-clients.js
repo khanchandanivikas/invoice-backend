@@ -110,6 +110,7 @@ const modifyClientById = async (req, res, next) => {
   try {
     client = await Client.findById(idClient);
   } catch (err) {
+    console.log(err);
     const error = new Error(
       "There was some error. It was not possible to update the datas."
     );
@@ -129,6 +130,7 @@ const modifyClientById = async (req, res, next) => {
       "There was some error. It was not possible to save the updated datas."
     );
     error.code = 500;
+    console.log(err);
     return next(error);
   }
   res.status(200).json({
