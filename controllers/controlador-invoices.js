@@ -273,6 +273,7 @@ const modifyInvoiceById = async (req, res, next) => {
     const error = new Error(
       "There was some error. It was not possible to update the datas."
     );
+    console.log(err);
     error.code = 500;
     return next(error);
   }
@@ -288,6 +289,7 @@ const modifyInvoiceById = async (req, res, next) => {
     const error = new Error(
       "There was some error. It was not possible to save the updated datas."
     );
+    console.log(err);
     error.code = 500;
     return next(error);
   }
